@@ -9,11 +9,11 @@ export PATH
 
 ########################## define function ##########################
 
-function prerr () {
+function perr () {
     echo "[$curdatetime] ERROR:" $1
 }
 
-function prinfo () {
+function pinfo () {
     echo "[$curdatetime] INFO:" $1
 }
 
@@ -31,11 +31,11 @@ function connect() {
 
 function switch() {
     if [ $1 == "A" ]; then
-        prinfo "rm -f config && ln -s configA config"
+        pinfo "rm -f config && ln -s configA config"
         rm -f "$config"
         ln -s "$configA" "$config"
     else
-        prinfo "rm -f config && ln -s configB config"
+        pinfo "rm -f config && ln -s configB config"
         rm -f "$config"
         ln -s "$configB" "$config"
     fi
@@ -43,7 +43,7 @@ function switch() {
 }
 
 function writelog() {
-    prinfo "echo -n $1 > $curfilename"
+    pinfo "echo -n $1 > $curfilename"
     touch $curfilename
     echo -n "$1" > $curfilename
 }
@@ -51,57 +51,57 @@ function writelog() {
 function choice() {
     # new tmpdir
     tmpdir="$workdir/tmp"
-    prinfo "rm -rf tmpdir && mkdir -p tmpdir"
+    pinfo "rm -rf tmpdir && mkdir -p tmpdir"
     rm -rf "$tmpdir"
     mkdir -p "$tmpdir"
 
     # get remote connection logs
-    prinfo "scp root@$host1:$lastfilename $tmpdir/$host1.$datetime.log"
+    pinfo "scp root@$host1:$lastfilename $tmpdir/$host1.$datetime.log"
     scp root@$host1:$lastfilename $tmpdir/$host1.$datetime.log
-    prinfo "result="$?
+    pinfo "result="$?
 
-    prinfo "scp root@$host2:$lastfilename $tmpdir/$host2.$datetime.log"
+    pinfo "scp root@$host2:$lastfilename $tmpdir/$host2.$datetime.log"
     scp root@$host2:$lastfilename $tmpdir/$host2.$datetime.log
-    prinfo "result="$?
+    pinfo "result="$?
 
-    prinfo "scp root@$host3:$lastfilename $tmpdir/$host3.$datetime.log"
+    pinfo "scp root@$host3:$lastfilename $tmpdir/$host3.$datetime.log"
     scp root@$host3:$lastfilename $tmpdir/$host3.$datetime.log
-    prinfo "result="$?
+    pinfo "result="$?
 
-    prinfo "scp root@$host4:$lastfilename $tmpdir/$host4.$datetime.log"
+    pinfo "scp root@$host4:$lastfilename $tmpdir/$host4.$datetime.log"
     scp root@$host4:$lastfilename $tmpdir/$host4.$datetime.log
-    prinfo "result="$?
+    pinfo "result="$?
 
     # count
     sumA=`grep A $tmpdir -irl | wc -l`
     sumB=`grep B $tmpdir -irl | wc -l`
-    prinfo "sumA=$sumA"
-    prinfo "sumB=$sumB"
+    pinfo "sumA=$sumA"
+    pinfo "sumB=$sumB"
 
     # detect the choice
     # initialization, default choice A
     if [ "$sumA" -eq 0 ] && [ "$sumB" -eq 0 ]; then
-        prinfo "initialization, default choice A"
+        pinfo "initialization, default choice A"
         thechoice="A"
     # choose A
     elif [ "$sumA" -ne 0 ] && [ "$sumB" -eq 0 ]; then
-        prinfo "A -ne 0 B -eq 0"
+        pinfo "A -ne 0 B -eq 0"
         thechoice="A"
     # choose B
     elif [ "$sumA" -eq 0 ] && [ "$sumB" -ne 0 ]; then
-        prinfo "A -eq 0 B -ne 0"
+        pinfo "A -eq 0 B -ne 0"
         thechoice="B"
     # choose A
     elif [ "$sumA" -gt "$sumB" ]; then
-        prinfo "A -gt B"
+        pinfo "A -gt B"
         thechoice="A"
     # choose B
     elif [ "$sumB" -gt "$sumA" ]; then
-        prinfo "B -gt A"
+        pinfo "B -gt A"
         thechoice="B"
     # excetipn. force connect to A
     elif [ "$sumA" -eq "$sumB" ]; then
-        prinfo "excetipn. force connect to A"
+        pinfo "excetipn. force connect to A"
         thechoice="A"
     fi
 
@@ -113,14 +113,14 @@ function choice() {
 
     # format return value: 1 A 2 B 0 do nothing
     if [ "$thechoice" == "$localchoice" ]; then
-        prinfo "thechoice == localchoice, do nothing"
+        pinfo "thechoice == localchoice, do nothing"
         writelog $thechoice
         return 0
     elif [ "$thechoice" == "A" ]; then
-        prinfo "choice A"
+        pinfo "choice A"
         return 1
     else
-        prinfo "choice B"
+        pinfo "choice B"
         return 2
     fi
 }
@@ -128,16 +128,16 @@ function choice() {
 ########################## start ##########################
 
 curdatetime=$(date "+%Y%m%d%H%M")
-prinfo "start"
+pinfo "start"
 
 # define offset minutes
 if [ $1 != "" ]; then
     # manual offset minutes
-    prinfo "use input offsetminutes=$1"
+    pinfo "use input offsetminutes=$1"
     offsetminutes=$1
 else
     # default offset minutes
-    prinfo "use default offsetminutes=5"
+    pinfo "use default offsetminutes=5"
     offsetminutes=5
 fi
 datetime=$(date --date="$offsetminutes minute ago" "+%Y%m%d%H%M")
@@ -147,8 +147,8 @@ workdir="/data/switchredis"
 logsdir="$workdir/logs"
 lastfilename="${logsdir}/${datetime}.log"
 curfilename="${logsdir}/${curdatetime}.log"
-prinfo "lastfilename=$lastfilename"
-prinfo "curfilename=$curfilename"
+pinfo "lastfilename=$lastfilename"
+pinfo "curfilename=$curfilename"
 
 # A huang wu redis
 hostA="10.3.142.241"
@@ -173,23 +173,23 @@ configB="/data/odp/conf/be-ng.prod.B"
 
 # test file exist
 if [ ! -e "$config" ]; then
-    prerr "$config does not exist"
+    perr "$config does not exist"
     exit 1
 fi
 
 if [ ! -e "$configA" ]; then
-    prerr "$configA does not exist"
+    perr "$configA does not exist"
     exit 1
 fi
 
 if [ ! -e "$configB" ]; then
-    prerr "$configB does not exist"
+    perr "$configB does not exist"
     exit 1
 fi
 
 # check local workspace
 if [ ! -e "$workdir/logs" ]; then
-    prinfo "mkdir -p $workdir/logs"
+    pinfo "mkdir -p $workdir/logs"
     mkdir -p "$workdir/logs"
 fi
 
@@ -201,33 +201,33 @@ resultB=$?
 
 # decision
 if [ "$resultA" == 1 ] && [ "$resultB" == 1 ]; then
-    prinfo "A and B are all alive"
-    prinfo "choice A or B"
+    pinfo "A and B are all alive"
+    pinfo "choice A or B"
     choice
     decision=$?
     if  [ "$decision" == 1 ]; then
-        prinfo "switch to A"
+        pinfo "switch to A"
         switch "A"
     elif [ "$decision" == 2 ]; then
-        prinfo "switch to B"
+        pinfo "switch to B"
         switch "B"
     else
-        prinfo "do nothing"
+        pinfo "do nothing"
     fi
 elif [ "$resultA" == 1 ] && [ "$resultB" == 0 ]; then
-    prinfo "A is alive but B did not alive"
-    prinfo "switch to A"
+    pinfo "A is alive but B did not alive"
+    pinfo "switch to A"
     switch "A"
 elif [ "$resultB" == 1 ] && [ "$resultA" == 0 ]; then
-    prinfo "B is alive but A did not alive"
-    prinfo "switch to B"
+    pinfo "B is alive but A did not alive"
+    pinfo "switch to B"
     switch "B"
 else
-    prerr "A and B were not alive"
-    prerr "exit 1"
+    perr "A and B were not alive"
+    perr "exit 1"
     exit 1
 fi
 
-prinfo "end"
+pinfo "end"
 
 ########################## end ##########################
