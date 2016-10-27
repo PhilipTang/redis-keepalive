@@ -2,7 +2,7 @@
 
 ## 业务背景
 
-![double-zone-think](media/14775726707336/double-zone-think.png)
+![double-zone-think](double-zone-think.png)
 
 __可以看到：__
 
@@ -25,11 +25,11 @@ __难点：__
 
 实现思路：
 
-![flowchart-redis-check](media/14775726707336/flowchart-redis-check.png)
+![flowchart-redis-check](flowchart-redis-check.png)
 
 枚举正常/异常情况：
 
-![list-complex-case](media/14775726707336/list-complex-case.png)
+![list-complex-case](list-complex-case.png)
 
 ## 代码实现
 
