@@ -3,6 +3,7 @@
 #   This Program is used to test if a connection is still alive, or to measure latency.
 # History:
 # 2016/10/27 Philip First release
+
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
