@@ -1,6 +1,7 @@
 #!/bin/bash
 # Program:
 #   This Program is used to test if a connection is still alive, or to measure latency.
+#   Reference: https://github.com/PhilipTang/redis-keepalive
 # History:
 # 2016/10/27 Philip First release
 
