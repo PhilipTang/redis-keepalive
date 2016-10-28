@@ -152,20 +152,20 @@ pinfo "lastfilename=$lastfilename"
 pinfo "curfilename=$curfilename"
 
 # A huang wu redis
-hostA="10.3.142.241"
-portA="6379"
-pwdA="HF123"
+hostA="127.0.0.1"
+portA="3306"
+pwdA="password"
 
 # B zhong jin redis
-hostB="10.3.142.241"
-portB="6379"
-pwdB="HF123"
+hostB="127.0.0.1"
+portB="3306"
+pwdB="password"
 
 # define host
-host1="10.3.158.62"
-host2="10.3.158.63"
-host3="10.19.140.112"
-host4="10.19.140.113"
+host1="ip1"
+host2="ip2"
+host3="ip3"
+host4="ip4"
 
 # config file location
 config="/data/odp/conf/be-ng"
