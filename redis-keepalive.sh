@@ -44,6 +44,10 @@ function switch() {
 }
 
 function writelog() {
+    yestoday=$(date --date="yesterday" "+%Y%m%d")
+    cleanfiles="${logsdir}/${yestoday}*.log"
+    pinfo "rm -f ${cleanfiles}"
+    rm -f $cleanfiles
     pinfo "echo -n $1 > $curfilename"
     touch $curfilename
     echo -n "$1" > $curfilename
