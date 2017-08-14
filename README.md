@@ -43,8 +43,3 @@ __难点：__
 - 加入定时任务，建议每5分钟检查一次
 
 */2 * * * * sh /data/switchredis/redis-keepalive.sh 2 >> /data/switchredis/redis-keepalive.log 2>&1
-
-## 版权
-
-开源、免费 ☺️
-
